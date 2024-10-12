@@ -11,16 +11,22 @@ import (
 	"time"
 
 	"github.com/PratikPradhan987/learn-go/internal/config"
+	"github.com/PratikPradhan987/learn-go/internal/http/handlers/student"
 )
 
 func main() {
+	// Load Configuration
 	cfg := config.MustLoad()
 
+	// Setup Router
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request){
         w.Write([]byte("Hello, World!"))
 	})
+	router.HandleFunc("POST /api/student", student.New())
+
+	// Server Setup
 
 	server := http.Server {
 		Addr:  cfg.Addr,
