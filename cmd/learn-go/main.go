@@ -35,7 +35,8 @@ func main() {
         w.Write([]byte("Hello, World!"))
 	})
 	router.HandleFunc("POST /api/student", student.New(storage))
-	router.HandleFunc("POST /api/student{id}", student.GetById(storage))
+	router.HandleFunc("POST /api/student/{id}", student.GetById(storage))
+	router.HandleFunc("GET /api/student", student.GetList(storage))
 
 	// Server Setup
 
