@@ -12,11 +12,21 @@ import (
 
 	"github.com/PratikPradhan987/learn-go/internal/config"
 	"github.com/PratikPradhan987/learn-go/internal/http/handlers/student"
+	"github.com/PratikPradhan987/learn-go/internal/storage/sqlite"
 )
 
 func main() {
 	// Load Configuration
 	cfg := config.MustLoad()
+
+	// database connection
+
+	storage,err := sqlite.New(cfg)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	slog.Info("Storage initialized")
 
 	// Setup Router
 	router := http.NewServeMux()
@@ -24,7 +34,7 @@ func main() {
 	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request){
         w.Write([]byte("Hello, World!"))
 	})
-	router.HandleFunc("POST /api/student", student.New())
+	router.HandleFunc("POST /api/student", student.New(storage))
 
 	// Server Setup
 
